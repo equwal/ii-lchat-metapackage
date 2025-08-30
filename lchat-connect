@@ -1,10 +1,16 @@
 #!/bin/sh
 
-# lchat connector script
 # Usage: lchat-connect <dir> <server> <channel>
 
 DIR="$1"
 SERVER="$2"
 CHANNEL="$3"
 
-lchat -a "$DIR"/"$SERVER"/"$CHANNEL"
+# KLUDGE: why does lchat work like this!
+#
+echo "#!/bin/sh\nsed '/ -!- /d'" >.filter
+chmod +x .filter
+
+trap 'rm -f .filter' EXIT INT TERM
+
+lchat -a "$DIR"/"$SERVER"/"$CHANNEL" -n 50
