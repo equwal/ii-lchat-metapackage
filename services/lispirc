@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+
+name="lispirc"
+description="IRC client for #lisp on irc.libera.chat"
+
+command="/home/jose/src/sh/irc-connect"
+command_args="(irc.libera.chat) <YOUR NICKSERV IDENT> <YOUR NICKSERV PASSWORD> <IRC FILES PATH> CHANNELS CHANNELS CHANNELS (eg. \#lisp)"
+command_user="jose:jose"
+pidfile="/run/${RC_SVCNAME}.pid"
+command_background="yes"
+
+depend() {
+    need net
+    after logger
+}
+
+stop() {
+    if [ -f "$pidfile" ]; then
+        local pid=$(cat "$pidfile")
+        ebegin "Stopping $name"
+        # Kill the main process and any child processes
+        pkill -P "$pid" 2>/dev/null
+        kill "$pid" 2>/dev/null
+        # Clean up the pidfile
+        rm -f "$pidfile"
+        eend $?
+    else
+        ebegin "Stopping $name"
+        # Fallback: kill by process name
+        pkill -f "irc-connect.*equwal" 2>/dev/null
+        eend $?
+    fi
+}

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# lchat connector script
+# Usage: lchat-connect <dir> <server> <channel>
+
+DIR="$1"
+SERVER="$2"
+CHANNEL="$3"
+
+lchat -a "$DIR"/"$SERVER"/"$CHANNEL"
