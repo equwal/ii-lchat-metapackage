@@ -6,5 +6,8 @@ DIR="$1"
 SERVER="$2"
 CHANNEL="$3"
 
+ORIGINAL_DIR="$(pwd)"
+trap 'cd "$ORIGINAL_DIR"' EXIT
+
 cd "$DIR"
 lchat -a "$DIR"/"$SERVER"/"$CHANNEL" -n 50
