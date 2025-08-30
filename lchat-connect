@@ -6,11 +6,5 @@ DIR="$1"
 SERVER="$2"
 CHANNEL="$3"
 
-# KLUDGE: why does lchat work like this!
-#
-echo "#!/bin/sh\nsed '/ -!- /d'" >.filter
-chmod +x .filter
-
-trap 'rm -f .filter' EXIT INT TERM
-
+cd "$DIR"
 lchat -a "$DIR"/"$SERVER"/"$CHANNEL" -n 50

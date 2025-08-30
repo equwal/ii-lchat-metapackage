@@ -1,7 +1,6 @@
 #!/bin/sh
 
-TIMEOUT=10
-CHANNELSWAIT=1
+WAIT=5
 
 # IRC client connector script
 # Usage: irc-connect <server> <nick> <pass> <dir> [channel1] [channel2] ...
@@ -14,14 +13,14 @@ shift 4
 
 ii -s "$SERVER" -n "$NICK" -i "$DIR" -e &
 II_PID=$!
-sleep "$TIMEOUT"
+sleep "$WAIT"
 echo "IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/nickerv/in
-sleep $CHANNELSWAIT
+sleep $WAIT
 
 # Join all provided channels
 for channel in "$@"; do
     echo "/j $channel" >"$DIR"/"$SERVER"/in
-    sleep "$CHANNELSWAIT"
+    sleep "$WAIT"
 done
 
 wait $II_PID
