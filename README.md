@@ -1,6 +1,6 @@
 # A suckless IRC package
 
-Get ii/lchat running on your machine.
+Get ii/lchat running on your machine. From [therealtruex.com](https://therealtruex.com/posts/iilchat-setup-too-easy)
 
 # INSTALL
 
@@ -90,3 +90,8 @@ stop() {
     eend $?
 }
 ```
+
+## TODO
+- SSL using socat or some other external program
+- ii on your VPS for bouncing
+- other init systems
