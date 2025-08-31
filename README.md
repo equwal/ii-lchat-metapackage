@@ -1,5 +1,9 @@
 # A suckless IRC package
 
+![image that literally says IRC on it](https://therealtruex.com/static/irc.webp)
+![example of IRC with lchat using the fancy coloured filter](https://therealtruex.com/static/ircchat.webp "coloured
+filtering and system message removal")
+
 Get ii/lchat running on your machine. From [therealtruex.com](https://therealtruex.com/posts/iilchat-setup-too-easy)
 
 # INSTALL
@@ -12,7 +16,7 @@ with nickserv on liberachat. Install it on your machine. If you are
 using a service that isn't in there, or you find it doesn't work,
 please contribute.
 - copy filter/indent to the folder you will have the irc at as .filter if you want that one. To just remove messages
-  that match a pattern (eg. join messages) check out that script.
+  that match a pattern (eg. join messages) check out that script. Use both for a very clean experience.
 
 Copy irc-connect and lchat-connect to your path. Modify as needed.
 
