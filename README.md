@@ -11,7 +11,8 @@ use.
 with nickserv on liberachat. Install it on your machine. If you are
 using a service that isn't in there, or you find it doesn't work,
 please contribute.
-- copy filter/indent to the folder you will have the irc at as .filter
+- copy filter/indent to the folder you will have the irc at as .filter if you want that one. To just remove messages
+  that match a pattern (eg. join messages) check out that script.
 
 Copy irc-connect and lchat-connect to your path. Modify as needed.
 
