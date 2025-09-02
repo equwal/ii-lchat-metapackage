@@ -1,0 +1,4 @@
+#!/bin/sh
+# hint: make an alias wih the argument built-in for quickly deploying the tail -f script here
+IRCTOPLEVEL="$1"
+cd "$1" ; tail -f -n 5 $(find "$1" -name out | grep \#) | ./.filter
