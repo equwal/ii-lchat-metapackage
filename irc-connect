@@ -14,7 +14,9 @@ shift 4
 ii -s "$SERVER" -n "$NICK" -i "$DIR" -e &
 II_PID=$!
 sleep "$WAIT"
-echo "IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/nickerv/in
+
+echo "/msg NickServ IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/in || echo "IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/nickserv/in 
+
 sleep $WAIT
 
 # Join all provided channels
