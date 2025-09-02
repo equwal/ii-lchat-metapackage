@@ -15,8 +15,15 @@ ii -s "$SERVER" -n "$NICK" -i "$DIR" -e &
 II_PID=$!
 sleep "$WAIT"
 
-echo "/msg NickServ IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/in || echo "IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/nickserv/in 
+# it's gotta work eventually!
 
+echo "/msg NickServ IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/in
+sleep "$WAIT"
+echo "IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/nickserv/in
+sleep $WAIT
+echo "IDENTIFY $PASS" >"$DIR"/"$SERVER"/nickserv/in
+sleep $WAIT
+echo "IDENTIFY $PASS" >"$DIR"/"$SERVER"/in
 sleep $WAIT
 
 # Join all provided channels
