@@ -1,7 +1,5 @@
 #!/bin/sh
 
-WAIT=5
-
 # IRC client connector script
 # Usage: irc-connect <server> <nick> <pass> <dir> [channel1] [channel2] ...
 
@@ -11,25 +9,70 @@ PASS="$3"
 DIR="$4"
 shift 4
 
+# Start ii client
 ii -s "$SERVER" -n "$NICK" -i "$DIR" -e &
 II_PID=$!
-sleep "$WAIT"
 
-# it's gotta work eventually!
+# Wait for server directory to be created and connection established
+wait_for_connection() {
+    local server_dir="$DIR/$SERVER"
+    local timeout=30
+    local count=0
+    
+    while [ $count -lt $timeout ]; do
+        if [ -p "$server_dir/in" ]; then
+            echo "Connection established to $SERVER"
+            return 0
+        fi
+        sleep 1
+        count=$((count + 1))
+    done
+    echo "Timeout waiting for connection to $SERVER" >&2
+    return 1
+}
 
-echo "/msg NickServ IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/in
-sleep "$WAIT"
-echo "IDENTIFY $NICK $PASS" >"$DIR"/"$SERVER"/nickserv/in
-sleep $WAIT
-echo "IDENTIFY $PASS" >"$DIR"/"$SERVER"/nickserv/in
-sleep $WAIT
-echo "IDENTIFY $PASS" >"$DIR"/"$SERVER"/in
-sleep $WAIT
+# Wait for nickserv directory (indicates we're connected)
+wait_for_nickserv() {
+    local nickserv_dir="$DIR/$SERVER/nickserv"
+    local timeout=15
+    local count=0
+    
+    while [ $count -lt $timeout ]; do
+        if [ -d "$nickserv_dir" ]; then
+            echo "NickServ available"
+            return 0
+        fi
+        sleep 1
+        count=$((count + 1))
+    done
+    echo "NickServ not found, proceeding anyway" >&2
+    return 1
+}
+
+# Wait for connection
+if ! wait_for_connection; then
+    kill $II_PID 2>/dev/null
+    exit 1
+fi
+
+# Authenticate with NickServ if password provided
+if [ -n "$PASS" ]; then
+    # Wait for nickserv to be available
+    wait_for_nickserv
+    
+    # Try different authentication methods
+    if [ -p "$DIR/$SERVER/nickserv/in" ]; then
+        echo "IDENTIFY $PASS" >"$DIR/$SERVER/nickserv/in"
+        sleep 2
+    fi
+    echo "/msg NickServ IDENTIFY $PASS" >"$DIR/$SERVER/in"
+    sleep 3
+fi
 
 # Join all provided channels
 for channel in "$@"; do
-    echo "/j $channel" >"$DIR"/"$SERVER"/in
-    sleep "$WAIT"
+    echo "/j $channel" >"$DIR/$SERVER/in"
+    sleep 2
 done
 
 wait $II_PID
