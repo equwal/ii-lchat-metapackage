@@ -16,7 +16,7 @@ find "$1" -name out | grep "#" | sort > "$tempfile"
 while read file; do
     channel=$(echo "$file" | sed 's/.*\/\(#[^\/]*\)\/out$/\1/')
     # Generate color based on channel name hash using sum of all characters (mod to keep number small)
-    hash=$(printf "%s" "$channel" | od -An -tu1 | tr -d ' ' | awk '{s=0; for(i=1;i<=NF;i++) s=(s+$i)%1000; print s}')
+    hash=$(printf "%s" "$channel" | od -b | awk '{for(i=2;i<=NF;i++) s=(s+$i)%1000} END{print s+0}')
     color=$((31 + hash % 6))
     (tail -F -n $LINES "$file" | ./"$FILTER" | sed -u 's/\x1b\[[0-9;]*m//g' | sed -u "s/^/\x1b[${color}m[$channel]\x1b[0m\t/" | stdbuf -o0 cat) &
 done < "$tempfile"
