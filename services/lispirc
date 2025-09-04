@@ -1,17 +1,23 @@
 #!/sbin/openrc-run
 
-name="lispirc"
-description="IRC client for #lisp on irc.libera.chat"
+name="ii-lchat-worker-1"
+description="IRC client worker #1"
 
 command="/home/jose/src/sh/irc-connect"
 command_args="(irc.libera.chat) <YOUR NICKSERV IDENT> <YOUR NICKSERV PASSWORD> <IRC FILES PATH> CHANNELS CHANNELS CHANNELS (eg. \#lisp)"
-command_user="jose:jose"
+# for example:
+#command_args="irc.libera.chat equwal 'PASSWORD WITH ESCAPES' /home/jose/scr/irc \#lisp \#commonlisp \#libreboot"
+command_user="<YOUR USER>"
 pidfile="/run/${RC_SVCNAME}.pid"
 command_background="yes"
 
 depend() {
     need net
     after logger
+}
+
+start_pre() {
+    checkpath --directory --owner "$command_user" --mode 0755 /home/jose/scr/irc
 }
 
 stop() {
@@ -21,13 +27,14 @@ stop() {
         # Kill the main process and any child processes
         pkill -P "$pid" 2>/dev/null
         kill "$pid" 2>/dev/null
+        # Wait a bit for graceful shutdown
+        sleep 2
+        # Force kill if still running
+        if kill -0 "$pid" 2>/dev/null; then
+            kill -KILL "$pid" 2>/dev/null
+        fi
         # Clean up the pidfile
         rm -f "$pidfile"
-        eend $?
-    else
-        ebegin "Stopping $name"
-        # Fallback: kill by process name
-        pkill -f "irc-connect.*equwal" 2>/dev/null
         eend $?
     fi
 }
