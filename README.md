@@ -18,13 +18,13 @@ please contribute.
 - copy filter/indent to the folder you will have the irc at as .filter if you want that one. To just remove messages
   that match a pattern (eg. join messages) check out that script. Use both for a very clean experience.
 
-Copy irc-connect and lchat-connect to your path. Modify as needed.
-
-Make aliases for lchat-connect.
+Copy irc-connect, lchat-connect, and lc to your path. Modify as needed.
 
 ```
-# example
-alias lispirc='/home/jose/src/sh/lchat-connect "$HOME/irc" "irc.libera.chat" "#lisp"'
+# connect to a channel
+lc commonlisp
+beach: the sicl compiler bootstraps itself
+> (you type)
 ```
 
 ## TODO
