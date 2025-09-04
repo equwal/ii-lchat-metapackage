@@ -1,25 +1,16 @@
 #!/bin/sh
 
 # Script to connect to existing IRC channels using lchat-connect
-# Usage: lchat-channel <channel-name>
-# just a wrapper for lchat-connect that is less verbose
+# Usage: lc <channel-name>
 
 [ $# -eq 1 ] || { echo "Usage: $0 <channel-name>"; exit 1; }
 
-channel="$1"
 irc_dir="$HOME/scr/irc"
-
 [ -d "$irc_dir" ] || { echo "Error: IRC directory $irc_dir not found"; exit 1; }
 
-# Find server with the channel using POSIX approach
-server=""
+# Find server containing the channel
 for server_dir in "$irc_dir"/irc.*; do
-    [ -d "$server_dir" ] || continue
-    [ -d "$server_dir/#$channel" ] || continue
-    server="${server_dir##*/}"
-    break
+    [ -d "$server_dir/#$1" ] && exec lchat-connect "$irc_dir" "${server_dir##*/}" "#$1"
 done
 
-[ -n "$server" ] || { echo "Error: Channel #$channel not found"; exit 1; }
-
-exec lchat-connect "$irc_dir" "$server" "#$channel"
+echo "Error: Channel #$1 not found"; exit 1
