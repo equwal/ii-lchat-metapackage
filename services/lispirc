@@ -17,7 +17,7 @@ depend() {
 }
 
 start_pre() {
-    checkpath --directory --owner "$command_user" --mode 0755 /home/jose/scr/irc
+    checkpath --directory --owner "$command_user:$command_user" --mode 0755 /home/jose/scr/irc
 }
 
 stop() {
