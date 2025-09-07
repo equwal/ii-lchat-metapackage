@@ -6,6 +6,8 @@ filtering and system message removal")
 
 Get ii/lchat running on your machine. From [therealtruex.com](https://therealtruex.com/posts/iilchat-setup-too-easy)
 
+Just the bare minimum of POSIX shell scripts to be usable.
+
 # INSTALL
 
 - Go install ii with the SSL patch added. This will run as a local server that makes files named in and out for lchat to
@@ -32,3 +34,8 @@ beach: the sicl compiler bootstraps itself
 - ii on your VPS for bouncing
 - other init systems
 - Better installation (make)
+
+## Alternatives:
+
+jj: includes a lot of stuff.
+https://github.com/aaronNGi/jj
